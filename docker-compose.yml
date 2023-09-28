@@ -1,0 +1,22 @@
+version: '3'
+services:
+
+  infra-mysql:
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - "3306:3306"
+        
+  infra-phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - infra-mysql:mysql
+    ports:
+      - "8011:80"
+    depends_on:
+      - infra-mysql
+    environment:
+      PMA_HOST: infra-mysql
