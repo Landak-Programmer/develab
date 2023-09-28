@@ -19,6 +19,7 @@
         <db.name>develab</db.name>
         <db.table.parking-info>parking_info</db.table.parking-info>
         <db.table.parking-availability>parking_availability</db.table.parking-availability>
+        <db.table.parking-availability-info>parking_availability_info</db.table.parking-availability-info>
         <db.options>?useSSL=false&amp;serverTimezone=UTC</db.options>
         <db.username>root</db.username>
         <db.password/>
@@ -89,6 +90,20 @@
                             <url>${jdbc.url}/${db.name}${db.options}</url>
                             <autocommit>true</autocommit>
                             <sqlCommand>drop table ${db.table.parking-availability}</sqlCommand>
+                            <onError>continue</onError>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>drop-table-parking-availability-info</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <url>${jdbc.url}/${db.name}${db.options}</url>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>drop table ${db.table.parking-availability-info}</sqlCommand>
                             <onError>continue</onError>
                         </configuration>
                     </execution>

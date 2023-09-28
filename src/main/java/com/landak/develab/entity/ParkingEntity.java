@@ -1,7 +1,6 @@
 package com.landak.develab.entity;
 
-import java.time.LocalDateTime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
@@ -13,17 +12,12 @@ import lombok.EqualsAndHashCode;
 public class ParkingEntity extends IEntity<String> {
 
     @Id
-    private String carPackNo;
-
-    @JsonIgnore
-    private LocalDateTime dateCreated = LocalDateTime.now();
-
-    @JsonIgnore
-    private LocalDateTime lastUpdated = LocalDateTime.now();
+    @Column(name = "car_park_no")
+    private String carParkNo;
 
     @Override
     public String getID() {
-        return carPackNo;
+        return carParkNo;
     }
 
 }

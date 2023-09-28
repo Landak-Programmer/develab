@@ -1,5 +1,6 @@
 package com.landak.develab.service.impl;
 
+import java.util.List;
 import com.landak.develab.entity.ParkingAvailability;
 import com.landak.develab.repo.ParkingAvailabilityRepo;
 import com.landak.develab.service.BaseEntityService;
@@ -21,9 +22,10 @@ public class ParkingAvailabilityServiceImpl extends BaseEntityService<ParkingAva
         return repo;
     }
     
-    
-    final boolean updateParkingAvailability() {
-        return true;
+    @Override
+    public final void updateParkingAvailability(final List<ParkingAvailability> list) {
+        repo.deleteAll();
+        repo.saveAll(list);
     }
 
 }
