@@ -2,6 +2,7 @@ package com.landak.develab.controller;
 
 import java.util.List;
 import com.landak.develab.controller.dto.NearestParkingResp;
+import com.landak.develab.controller.dto.Pageable;
 import com.landak.develab.service.ParkingInfoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController("/carparks")
+@RestController
 public class ParkingController {
 
     private final ParkingInfoService service;
@@ -20,12 +21,14 @@ public class ParkingController {
     }
 
     @GetMapping(value = {
-            "/nearest"
+            "/carparks/nearest"
     }, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NearestParkingResp>> nearestCarPark(
             @RequestParam double latitude, @RequestParam double longitude,
-            @RequestParam(required = false) int page, @RequestParam(required = false) double perPage) {
-        return ResponseEntity.ok(service.getNearestCarPark(latitude, longitude, page, perPage));
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "0") int perPage) {
+        final Pageable pageable = new Pageable(page, perPage);
+        return ResponseEntity.ok(service.getNearestCarPark(latitude, longitude, pageable));
     }
 
 }

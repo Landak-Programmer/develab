@@ -66,44 +66,17 @@
                 </configuration>
 
                 <executions>
-                    <execution>
-                        <id>drop-table-parking-info</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>${jdbc.url}/${db.name}${db.options}</url>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>drop table ${db.table.parking-info}</sqlCommand>
-                            <onError>continue</onError>
-                        </configuration>
-                    </execution>
 
                     <execution>
-                        <id>drop-table-parking-availability</id>
+                        <id>drop-db</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>execute</goal>
                         </goals>
                         <configuration>
-                            <url>${jdbc.url}/${db.name}${db.options}</url>
+                            <url>${jdbc.url}${db.options}</url>
                             <autocommit>true</autocommit>
-                            <sqlCommand>drop table ${db.table.parking-availability}</sqlCommand>
-                            <onError>continue</onError>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>drop-table-parking-availability-info</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>execute</goal>
-                        </goals>
-                        <configuration>
-                            <url>${jdbc.url}/${db.name}${db.options}</url>
-                            <autocommit>true</autocommit>
-                            <sqlCommand>drop table ${db.table.parking-availability-info}</sqlCommand>
+                            <sqlCommand>drop database ${db.name}</sqlCommand>
                             <onError>continue</onError>
                         </configuration>
                     </execution>
