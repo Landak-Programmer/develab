@@ -1,6 +1,7 @@
 package com.landak.develab.controller;
 
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
 import com.landak.develab.controller.dto.NearestParkingResp;
 import com.landak.develab.controller.dto.Pageable;
 import com.landak.develab.service.ParkingInfoService;
@@ -26,8 +27,8 @@ public class ParkingController {
     public ResponseEntity<List<NearestParkingResp>> nearestCarPark(
             @RequestParam double latitude, @RequestParam double longitude,
             @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "0") int perPage) {
-        final Pageable pageable = new Pageable(page, perPage);
+            @RequestParam(required = false, defaultValue = "0") int per_page) {
+        final Pageable pageable = new Pageable(page, per_page);
         return ResponseEntity.ok(service.getNearestCarPark(latitude, longitude, pageable));
     }
 

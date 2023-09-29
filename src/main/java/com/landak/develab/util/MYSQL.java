@@ -42,7 +42,9 @@ public class MYSQL implements AutoCloseable {
 
     public MYSQL(final String key) throws SQLException {
         this.key = key;
-        connection = connections.get(key).getConnection();
+        connection = connections
+                .get(key)
+                .getConnection();
     }
 
     public Connection getConnection() {
@@ -64,6 +66,12 @@ public class MYSQL implements AutoCloseable {
                 connection.close();
             }
         } catch (Exception ignored) {
+        }
+    }
+
+    public static void globalClose() {
+        for (Map.Entry<String, HikariDataSource> map : connections.entrySet()) {
+            map.getValue().close();
         }
     }
 

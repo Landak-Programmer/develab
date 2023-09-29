@@ -1,5 +1,6 @@
 package com.landak.develab.util.hdb;
 
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import com.landak.develab.http.HttpServiceImpl;
 import com.landak.develab.util.MYSQL;
 import com.landak.develab.util.geo.LatLonCoordinate;
@@ -15,6 +17,7 @@ import com.landak.develab.util.geo.SVY21;
 import com.landak.develab.util.hdb.obj.HDBRecord;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +30,20 @@ public class CSVImport {
 
     public static void main(String[] args) {
 
-        MYSQL.setupConnection("develab", "localhost:3306", "develab", "root", "");
-        final HttpServiceImpl service = new HttpServiceImpl();
+        final Properties properties = new Properties();
+        try {
+            // Load the properties from the file
+            final FileInputStream input = new FileInputStream("src/main/resources/application.properties");
+            properties.load(input);
+            input.close();
+        } catch (IOException e) {
+            LOGGER.error("Error occurred. Msg {}", e.getMessage(), e);
+            throw new RuntimeException("Unable to get resources file. Abort build....", e);
+        }
+
+        MYSQL.setupConnection(properties.getProperty("app.db_name"), properties.getProperty("app.db_server"), 
+                properties.getProperty("app.db_name"), properties.getProperty("spring.datasource.username"), 
+                properties.getProperty("spring.datasource.password"));
 
         final List<HDBRecord> records = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader("src/main/resources/HDBCarparkInformation.csv"))) {
@@ -73,6 +88,10 @@ public class CSVImport {
             LOGGER.error("Error occurred. Msg {}", e.getMessage(), e);
             throw new RuntimeException("Unable to save into db. Abort build....", e);
         }
+
+        MYSQL.globalClose();
+        // fixme : [WARNING] thread Thread[mysql-cj-abandoned-connection-cleanup,5,com.landak.develab.util.hdb.CSVImport] 
+        //  will linger despite being asked to die via interruption 
     }
 
 }
